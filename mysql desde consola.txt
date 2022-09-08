@@ -1,3 +1,57 @@
+
+/////////////////////////////////////////////////////////////////////////////////
+
+relacion one-to-many
+
+/////////////////////////////////////////////////////////////////////////////////
+
+
+create table clientes(id_clientes int primary key auto_increment, nombre varchar(100)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+create table obras(id_obras int primary key auto_increment, 
+                 id_clientes int not null,
+                 nombre varchar(100),
+                 foreign key (id_clientes) references clientes(id_clientes) 
+                 ON DELETE CASCADE
+                 ON UPDATE CASCADE) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+/////////////////////////////////////////////////////////////////////////////////
+
+relacion one-to-one
+
+/////////////////////////////////////////////////////////////////////////////////
+
+
+create table socio(id_socio int primary key auto_increment, nombre varchar(100)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+create table carnet(id_carnet int primary key auto_increment, dni int(10)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+alter table carnet add column id_socio int not null;
+alter table carnet add foreign key (id_socio) references socio (id_socio);
+alter table carnet add unique (id_socio);   # solo puede existir un id_socio de cada uno en la tabla (restringe entradas duplicadas)
+
+
+/////////////////////////////////////////////////////////////////////////////////
+
+relacion many-to-many
+
+/////////////////////////////////////////////////////////////////////////////////
+
+
+create table usuario(id_usuario int not null primary key auto_increment, nombre varchar(100)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+create table canal(id_canal int not null primary key auto_increment, nombre varchar(100)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+create table usuario_canal(id_usuario int not null, id_canal int not null, primary key (id_usuario, id_canal));  # seteando los 2 campos como primary key evito que un mismo usuario se suscriba al mismo canal 2 veces (duplicados)
+alter table usuario_canal add foreign key (id_usuario) references usuario (id_usuario) on delete cascade on update cascade;  # con delete o update. si elimino o actualizo un usuario (tabla usuario), se elimina o actualiza su registro relacionado en tabla usuario_canal.
+alter table usuario_canal add foreign key (id_canal) references canal (id_canal) on delete cascade on update cascade;
+
+INSERT INTO `usuario` (`id_usuario`, `nombre`) VALUES (NULL, 'jano'), (NULL, 'migue');
+INSERT INTO `canal` (`id_canal`, `nombre`) VALUES (NULL, 'canal 13'), (NULL, 'tn');
+INSERT INTO `usuario_canal` (`id_usuario`, `id_canal`) VALUES ('1', '1'), ('1', '2');
+
+
+
+
+
+
 /////////////////////////////////////////////////////////////////////////////////
 
 COMANDOS BASICOS MYSQL
@@ -91,58 +145,6 @@ SELECT DISTINCT Country FROM Customers;
 
 //para comentarios usar 
 # comentario aca
-
-
-
-
-
-/////////////////////////////////////////////////////////////////////////////////
-
-relacion one-to-many
-
-/////////////////////////////////////////////////////////////////////////////////
-
-
-create table clientes(id_clientes int primary key auto_increment, nombre varchar(100)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-create table obras(id_obras int primary key auto_increment, 
-                 id_clientes int not null,
-                 nombre varchar(100),
-                 foreign key (id_clientes) references clientes(id_clientes) 
-                 ON DELETE CASCADE
-                 ON UPDATE CASCADE) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-
-/////////////////////////////////////////////////////////////////////////////////
-
-relacion one-to-one
-
-/////////////////////////////////////////////////////////////////////////////////
-
-
-create table socio(id_socio int primary key auto_increment, nombre varchar(100)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-create table carnet(id_carnet int primary key auto_increment, dni int(10)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-alter table carnet add column id_socio int not null;
-alter table carnet add foreign key (id_socio) references socio (id_socio);
-alter table carnet add unique (id_socio);   # restringe entradas duplicadas
-
-
-/////////////////////////////////////////////////////////////////////////////////
-
-relacion many-to-many
-
-/////////////////////////////////////////////////////////////////////////////////
-
-
-create table usuario(id_usuario int not null primary key auto_increment, nombre varchar(100)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-create table canal(id_canal int not null primary key auto_increment, nombre varchar(100)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-create table usuario_canal(id_usuario int not null, id_canal int not null, primary key (id_usuario, id_canal));
-alter table usuario_canal add foreign key (id_usuario) references usuario (id_usuario) on delete cascade on update cascade;  # con delete o update. si elimino o actualizo un usuario (tabla usuario), se elimina o actualiza su registro relacionado en tabla usuario_canal.
-alter table usuario_canal add foreign key (id_canal) references canal (id_canal) on delete cascade on update cascade;
-
-INSERT INTO `usuario` (`id_usuario`, `nombre`) VALUES (NULL, 'jano'), (NULL, 'migue');
-INSERT INTO `canal` (`id_canal`, `nombre`) VALUES (NULL, 'canal 13'), (NULL, 'tn');
-INSERT INTO `usuario_canal` (`id_usuario`, `id_canal`) VALUES ('1', '1'), ('1', '2');
 
 
 
