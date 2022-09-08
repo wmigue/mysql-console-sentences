@@ -137,9 +137,12 @@ relacion many-to-many
 create table usuario(id_usuario int not null primary key auto_increment, nombre varchar(100)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 create table canal(id_canal int not null primary key auto_increment, nombre varchar(100)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 create table usuario_canal(id_usuario int not null, id_canal int not null, primary key (id_usuario, id_canal));
-alter table usuario_canal add foreign key (id_usuario) references usuario (id_usuario)
-alter table usuario_canal add foreign key (id_canal) references canal (id_canal)
+alter table usuario_canal add foreign key (id_usuario) references usuario (id_usuario) on delete cascade on update cascade;  # con delete o update. si elimino o actualizo un usuario (tabla usuario), se elimina o actualiza su registro relacionado en tabla usuario_canal.
+alter table usuario_canal add foreign key (id_canal) references canal (id_canal) on delete cascade on update cascade;
 
+INSERT INTO `usuario` (`id_usuario`, `nombre`) VALUES (NULL, 'jano'), (NULL, 'migue');
+INSERT INTO `canal` (`id_canal`, `nombre`) VALUES (NULL, 'canal 13'), (NULL, 'tn');
+INSERT INTO `usuario_canal` (`id_usuario`, `id_canal`) VALUES ('1', '1'), ('1', '2');
 
 
 
