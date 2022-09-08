@@ -1,0 +1,215 @@
+/////////////////////////////////////////////////////////////////////////////////
+
+COMANDOS BASICOS MYSQL
+
+/////////////////////////////////////////////////////////////////////////////////
+
+
+
+//login
+mysql -h <localhost o host> -u <root o usuario> -p <contraseña si la hubiera>;
+
+//seleccionar base de datos
+use mibasedatos;
+
+//mostrar todas las bases
+show databases;
+
+//nueva base
+create database miprueba;
+
+//ver tablas
+show tables;
+
+//ver columnas de una tabla
+describe mitabla;
+
+//ver columnas de una tabla
+describe mitabla;
+
+//salir
+quit
+
+//ver que motor de base de datos hay disponibles, en default es el usado actualmente.
+SHOW engines;
+
+//Ver el motor de almacenamiento de una tabla concreta a través de su sentencia de creación.
+SHOW create table basededatos.nombretabla;
+
+//Consultar el motor de almacenamiento de varias tablas simultáneamente.
+SELECT table_name,engine from information_schema.tables WHERE table_schema='nombredb';
+
+
+//Método alternativo para obtener información de las tablas de una base de datos.
+USE nombrebasedatos; SHOW table status where name='nombretabla';
+
+//borrar una tabla o base de datos
+DROP TABLE table_name; 
+
+//agregando una columna nueva a una tabla
+ALTER TABLE Customers
+ADD Email varchar(255);
+
+//eliminar datos completos de una tabla existente. 
+truncate table mitabla;
+
+//seleccionar datos 
+SELECT column1, column2, ...
+FROM table_name
+WHERE condition1 OR condition2 OR condition3 ...; 
+
+
+//ordenar datos ascendente y descendente
+SELECT column1, column2, ...
+FROM table_name
+ORDER BY column1, column2, ... ASC|DESC; 
+
+
+//insertar datos
+INSERT INTO Customers (CustomerName, ContactName, Address, City, PostalCode, Country)
+VALUES ('Cardinal', 'Tom B. Erichsen', 'Skagen 21', 'Stavanger', '4006', 'Norway');
+
+//actualizar datos
+UPDATE Customers
+SET ContactName = 'Alfred Schmidt', City= 'Frankfurt'
+WHERE CustomerID = 1;
+
+//eliminar datos
+DELETE FROM Customers WHERE CustomerName='Alfreds Futterkiste';
+
+
+//datos afines de varias tablas (join)
+select a.alumno_nombre, b.materia_nombre from alumno a, materias b where a.id=b.id
+
+
+//maximos minimos 
+SELECT MIN(Price) AS SmallestPrice
+FROM Products;
+
+//seleccionar uno de cada uno
+SELECT DISTINCT Country FROM Customers;
+
+//para comentarios usar 
+# comentario aca
+
+
+
+
+
+/////////////////////////////////////////////////////////////////////////////////
+
+relacion one-to-many
+
+/////////////////////////////////////////////////////////////////////////////////
+
+
+create table clientes(id_clientes int primary key auto_increment, nombre varchar(100)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+create table obras(id_obras int primary key auto_increment, 
+                 id_clientes int not null,
+                 nombre varchar(100),
+                 foreign key (id_clientes) references clientes(id_clientes) 
+                 ON DELETE CASCADE
+                 ON UPDATE CASCADE) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+/////////////////////////////////////////////////////////////////////////////////
+
+relacion one-to-one
+
+/////////////////////////////////////////////////////////////////////////////////
+
+
+create table socio(id_socio int primary key auto_increment, nombre varchar(100)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+create table carnet(id_carnet int primary key auto_increment, dni int(10)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+alter table carnet add column id_socio int not null;
+alter table carnet add foreign key (id_socio) references socio (id);
+alter table carnet add unique (id_socio);   # restringe entradas duplicadas
+
+
+/////////////////////////////////////////////////////////////////////////////////
+
+relacion many-to-many
+
+/////////////////////////////////////////////////////////////////////////////////
+
+
+create table usuario(id_usuario int not null primary key auto_increment, nombre varchar(100)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+create table canal(id_canal int not null primary key auto_increment, nombre varchar(100)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+create table usuario_canal(id_usuario int not null, id_canal int not null, primary key (id_usuario, id_canal));
+alter table usuario_canal add foreign key (id_usuario) references usuario (id_usuario)
+alter table usuario_canal add foreign key (id_canal) references canal (id_canal)
+
+
+
+
+
+
+/////////////////////////////////////////////////////////////////////////////////
+
+MOTORES DE BD MYSQL Y SUS CARACTERISTICAS
+
+/////////////////////////////////////////////////////////////////////////////////
+
+Si necesitamos transacciones, claves foráneas y bloqueos, tendremos que escoger InnoDB. 
+Por el contrario, escogeremos MyISAM en aquellos casos en los que predominen las consultas SELECT a la base de datos.
+
+Las principales ventajas de InnoDB son:
+
+    Soporte de transacciones
+    Bloqueo de registros
+    Nos permite tener las características ACID (Atomicity, Consistency, Isolation and Durability: Atomicidad, Consistencia, Aislamiento y Durabilidad en español), garantizando la integridad de nuestras tablas.
+    Es probable que si nuestra aplicación hace un uso elevado de INSERT y UPDATE notemos un aumento de rendimiento con respecto a MyISAM.
+
+Y las de MyISAM:
+
+    Mayor velocidad en general a la hora de recuperar datos.
+    Recomendable para aplicaciones en las que dominan las sentencias SELECT ante los INSERT /UPDATE.
+    Ausencia de características de atomicidad ya que no tiene que hacer comprobaciones de la integridad referencial, ni bloquear las tablas para realizar las operaciones, esto nos lleva como los anteriores puntos a una mayor velocidad.
+
+
+
+
+/////////////////////////////////////////////////////////////////////////////////
+
+CURIOSIDADES EXPLICADAS ACA
+
+/////////////////////////////////////////////////////////////////////////////////
+
+//se usan para determinar comportamiento de la tabla cuando eliminamos o actualizamos a una tabla padre de esta. 
+//ej. eliminamos a tabla padre, se elimina tabla hijo automaticamente.
+ ON DELETE CASCADE
+ ON UPDATE CASCADE
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
