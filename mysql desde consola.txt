@@ -123,7 +123,7 @@ relacion one-to-one
 create table socio(id_socio int primary key auto_increment, nombre varchar(100)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 create table carnet(id_carnet int primary key auto_increment, dni int(10)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 alter table carnet add column id_socio int not null;
-alter table carnet add foreign key (id_socio) references socio (id);
+alter table carnet add foreign key (id_socio) references socio (id_socio);
 alter table carnet add unique (id_socio);   # restringe entradas duplicadas
 
 
