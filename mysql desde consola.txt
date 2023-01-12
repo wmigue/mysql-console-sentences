@@ -147,7 +147,12 @@ SELECT DISTINCT Country FROM Customers;
 # comentario aca
 
 
+//consulta where condicion en subconsulta (traigo la columna lista, cuando se cumple la segunda condicion: que la columna id_lista sea la de maximo valor)
+select lista from listas WHERE id_lista=(SELECT max(id_lista) FROM listas)
 
+//cuando la fecha está en formato varchar o texto, la consulta para consultar entre dos fechas es la siguiente:
+SELECT * FROM `facturas` WHERE nombre_clientes = "ROVELLA CARRANZA SA" AND estado= "PENDIENTE" AND
+STR_TO_DATE(fecha, '%d-%m-%Y %r') BETWEEN '2021-02-01' and '2021-02-28'
 
 
 /////////////////////////////////////////////////////////////////////////////////
