@@ -155,6 +155,41 @@ SELECT * FROM `facturas` WHERE nombre_clientes = "ROVELLA CARRANZA SA" AND estad
 STR_TO_DATE(fecha, '%d-%m-%Y %r') BETWEEN '2021-02-01' and '2021-02-28'
 
 
+//varios replace en uno solo anidados.
+UPDATE tbl_questions SET question = REPLACE(
+                    REPLACE(
+                        REPLACE(
+                            REPLACE(
+                                question, 
+                                '< STRONG>', 
+                                '<b>'
+                            ),
+                            '</ STRONG>', 
+                            '</b>'
+                        ),
+                        '<STRONG>', 
+                        '<b>'
+                    ),
+                    '</STRONG>', 
+                    '</b>'
+                )
+WHERE exam_id = 'RXS1A-4'
+
+
+
+//consulta con 2 where, el primero siempre es requerido (exam_id), pero el segundo es multiple ( tiene varios OR ) .
+SELECT * 
+FROM tbl_questions 
+WHERE exam_id = 'RXS1A-2' 
+AND (
+    question LIKE '%<STRONG>%' 
+    OR question LIKE '%< STRONG>%' 
+    OR question LIKE '%</ STRONG>%'
+);
+
+
+
+
 /////////////////////////////////////////////////////////////////////////////////
 
 MOTORES DE BD MYSQL Y SUS CARACTERISTICAS
