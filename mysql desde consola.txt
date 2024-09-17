@@ -59,6 +59,9 @@ COMANDOS BASICOS MYSQL
 /////////////////////////////////////////////////////////////////////////////////
 
 
+//importar base de datos desde consola (archivos grandes)
+mysql -u tu_user -ptupass --port=3308 nombre_base_datos < "G:\XAMPS\xampp\htdocs\16-9-2024 plusdata ecuador\db\localhost.sql"
+
 
 //login
 mysql -h <localhost o host> -u <root o usuario> -p <contraseña si la hubiera>;
