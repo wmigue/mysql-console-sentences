@@ -16,6 +16,25 @@ create table obras(id_obras int primary key auto_increment,
                  ON UPDATE CASCADE) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
+En caso de tener ya las tablas, creamos las relaciones asi:
+
+ALTER TABLE obras
+ADD CONSTRAINT fk_obras_clientes
+FOREIGN KEY (id_clientes)
+REFERENCES clientes(id_clientes)
+ON DELETE CASCADE
+ON UPDATE CASCADE;
+
+El nombre fk_obras_clientes es opcional pero recomendable para identificar la relación.
+fk_obras_clientes es solo un alias, o más correctamente, el nombre de la restricción (CONSTRAINT name). No afecta la lógica de la relación, pero:
+✅ ¿Para qué sirve?
+
+    Te permite identificar fácilmente la clave foránea en el futuro.
+
+    Es útil si quieres eliminar o modificar la relación después, por ejemplo:
+
+
+
 /////////////////////////////////////////////////////////////////////////////////
 
 relacion one-to-one
